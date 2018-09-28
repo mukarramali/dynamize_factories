@@ -1,25 +1,29 @@
 class DynamizeFactories
 
   def initialize file
+    @file = file
     @content = File.read file
   end
 
   def dynamize data
-    attribute       = data.split.first
-    attribute_index = data.index(attribute)
-    attr_last_index = attribute_index+attribute.size
-    value           = data[attr_last_index..-1].strip
-    pre_padding     = pad(attribute_index)
-    in_padding      = pad(data.index(value) - attr_last_index)
-    "#{pre_padding}#{attribute}#{in_padding}{#{value}}"
+    value    = data.split(' ', 2)[1]
+    new_val  = "{#{value}}"
+    "#{data.sub(value, new_val)}"
   end
 
   def eval
-    lines = @content.split("\n")
+    lines    = @content.split("\n")
     lines.each_with_index do |line, index|
       lines[index] = dynamize(line) if line.size.positive? && type(line)
     end
-    lines.join("\n")
+    @result = lines.join("\n")
+    @result
+  end
+
+  def put_it_back
+    @file = File.new(@file, 'w')
+    @file.write(@result)
+    @file.close
   end
 
   private

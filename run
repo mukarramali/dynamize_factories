@@ -10,3 +10,6 @@ puts File.read file
 puts "\n\n"
 puts "=======After========="
 puts df.eval
+df.put_it_back
+puts "\n\n"
+puts "=======File Updated========="
