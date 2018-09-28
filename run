@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require_relative 'dynamic_factories'
+
+puts ARGV
+file = ARGV[0] || './sample.rb'
+
+df = DynamizeFactories.new file
+puts "=======Before========="
+puts File.read file
+puts "\n\n"
+puts "=======After========="
+puts df.eval
