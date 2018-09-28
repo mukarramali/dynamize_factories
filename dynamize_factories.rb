@@ -6,15 +6,19 @@ class DynamizeFactories
   end
 
   def dynamize data
-    value    = data.split(' ', 2)[1]
-    new_val  = "{#{value}}"
-    "#{data.sub(value, new_val)}"
+    begin
+      value    = data.split(' ', 2)[1]
+      new_val  = "{#{value}}"
+      "#{data.sub(value, new_val)}"
+    rescue
+      puts "<==== Error search in #{@file}: {data} =====>"
+    end
   end
 
   def evaluate
     lines    = @content.split("\n")
     lines.each_with_index do |line, index|
-      lines[index] = dynamize(line) if line.size.positive? && type(line)
+      lines[index] = dynamize(line) if line.strip.size.positive? && type(line)
     end
     @result = lines.join("\n")
     @result
