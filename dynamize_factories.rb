@@ -5,9 +5,17 @@ class DynamizeFactories
     @content = File.read file
   end
 
+  def decomment val
+    left        = val[0..(val.index('#'))]
+    right       = val[(val.index('#'))..-1]
+    not_comment = left.count('\'') == right.count('\'') && left.count('"') == right.count('"')
+    not_comment ? val : val[0..(val.index('#')-1)]
+  end
+
   def dynamize data
     begin
       value    = data.split(' ', 2)[1]
+      value    = decomment(value).strip if value.include?'#'
       new_val  = "{#{value}}"
       "#{data.sub(value, new_val)}"
     rescue
@@ -38,6 +46,7 @@ class DynamizeFactories
                       data.strip == 'end' ||                # END block
                       data.strip[0] == '#' ||               # Comment
                       data[-1] == '}' ||                    # DYNAMIC value
+                      data.strip.index('require') == 0 ||   # require syntax
                       data.include?('association ') ||      # Association
                       data.include?('FactoryBot.define') || # CLASS_BEGIN
                       data.include?('create(:') ||          # Create another
