@@ -28,13 +28,15 @@ class DynamizeFactories
   end
 
   private
-
     def type data
-      return false if data.split(' ').size == 1
-                      data.include?('FactoryBot.define') || # CLASS_BEGIN
+      return false if data.split(' ').size == 1 ||          # Single token
+                      data.split(' ')[1] == '=' ||          # Assignments
                       data.strip == 'end' ||                # END block
                       data.strip[0] == '#' ||               # Comment
                       data[-1] == '}' ||                    # DYNAMIC value
+                      data.include?('association ') ||      # Association
+                      data.include?('FactoryBot.define') || # CLASS_BEGIN
+                      data.include?('create(:') ||          # Create another
                       (data.split.last == 'do' || (data.include?('do') && data[-1] == '|')) # Do block
       true  # Static assignment
     end
