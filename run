@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require_relative 'dynamic_factories'
+require_relative 'dynamize_factories'
 
 files = ARGV[0] || './sample.rb'
 
