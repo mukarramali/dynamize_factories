@@ -30,11 +30,12 @@ class DynamizeFactories
   private
 
     def type data
-      return false if data.include?('FactoryBot.define') || # CLASS_BEGIN
+      return false if data.split(' ').size == 1
+                      data.include?('FactoryBot.define') || # CLASS_BEGIN
                       data.strip == 'end' ||                # END block
                       data.strip[0] == '#' ||               # Comment
                       data[-1] == '}' ||                    # DYNAMIC value
-                      (data.include?('factory :') && (data.split.last == 'do' || data[-1] == '|')) # Do block
+                      (data.split.last == 'do' || (data.include?('do') && data[-1] == '|')) # Do block
       true  # Static assignment
     end
 

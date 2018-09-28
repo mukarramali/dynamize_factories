@@ -1,10 +1,16 @@
 #!/usr/bin/env ruby
 require_relative 'dynamic_factories'
 
-puts ARGV
 files = ARGV[0] || './sample.rb'
 
+files = File.join(files, '*.rb') if File.directory?files
+
 Dir[files].each do |file|
-  df = DynamizeFactories.new file
-  df.put_it_back
+  begin
+    df = DynamizeFactories.new file
+    df.put_it_back
+  rescue StandardError => e
+    puts "Error in file: #{file}"
+    puts e
+  end
 end
