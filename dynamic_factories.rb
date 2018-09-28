@@ -11,7 +11,7 @@ class DynamizeFactories
     "#{data.sub(value, new_val)}"
   end
 
-  def eval
+  def evaluate
     lines    = @content.split("\n")
     lines.each_with_index do |line, index|
       lines[index] = dynamize(line) if line.size.positive? && type(line)
@@ -21,6 +21,7 @@ class DynamizeFactories
   end
 
   def put_it_back
+    evaluate unless @result
     @file = File.new(@file, 'w')
     @file.write(@result)
     @file.close

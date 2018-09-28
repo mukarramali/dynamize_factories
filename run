@@ -2,14 +2,9 @@
 require_relative 'dynamic_factories'
 
 puts ARGV
-file = ARGV[0] || './sample.rb'
+files = ARGV[0] || './sample.rb'
 
-df = DynamizeFactories.new file
-puts "=======Before========="
-puts File.read file
-puts "\n\n"
-puts "=======After========="
-puts df.eval
-df.put_it_back
-puts "\n\n"
-puts "=======File Updated========="
+Dir[files].each do |file|
+  df = DynamizeFactories.new file
+  df.put_it_back
+end
