@@ -8,7 +8,7 @@ class DynamizeFactories
   def decomment val
     left        = val[0..(val.index('#'))]
     right       = val[(val.index('#'))..-1]
-    not_comment = left.count('\'') == right.count('\'') && left.count('"') == right.count('"')
+    not_comment = left.count('\'') != 0 && left.count('\'') == right.count('\'') && left.count('"') == right.count('"')
     not_comment ? val : val[0..(val.index('#')-1)]
   end
 
